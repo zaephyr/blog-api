@@ -6,10 +6,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-const session = require('express-session');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
