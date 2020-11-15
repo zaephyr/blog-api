@@ -25,30 +25,23 @@ exports.getOne = (Model, popOptions) =>
             return next(new AppError('No document found with that ID', 404));
         }
 
-        res.status(200).json({
-            status: 'success',
-            data: {
-                data: doc,
-            },
-        });
+        res.status(200).json(doc);
     });
 
 exports.updateOne = (Model) =>
     catchAsync(async (req, res, next) => {
-        const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+        const data = await Model.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true,
         });
 
-        if (!doc) {
+        if (!data) {
             return next(new AppError('No document found with that ID', 404));
         }
 
         res.status(200).json({
             status: 'success',
-            data: {
-                data: doc,
-            },
+            data,
         });
     });
 
@@ -66,11 +59,13 @@ exports.deleteOne = (Model) =>
         });
     });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, filterOpt) =>
     catchAsync(async (req, res, next) => {
         // To Allow for nested GET reviews on blog(hack)
         let filter = {};
-        if (req.params.blogId) filter = { blog: req.params.blogId };
+
+        if (filterOpt) filter = filterOpt;
+        if (req.params.blogId) filter.blog = req.params.blogId;
 
         const features = new APIFeatures(Model.find(filter), req.query).filter().sort().limitFields().paginate();
 
@@ -80,8 +75,6 @@ exports.getAll = (Model) =>
         res.status(200).json({
             status: 'success',
             results: doc.length,
-            data: {
-                data: doc,
-            },
+            data: doc,
         });
     });

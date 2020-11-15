@@ -67,8 +67,10 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
     // Getting token and check if its there
     let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    if (req.headers.authorization && req.headers.authorization.startsWith('bearer')) {
         token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies.jwt) {
+        token = req.cookies.jwt;
     }
 
     if (!token) {
@@ -85,8 +87,19 @@ exports.protect = catchAsync(async (req, res, next) => {
     }
 
     req.user = currentUser;
+    res.locals.user = currentUser;
+
     next();
 });
+
+exports.logout = (req, res, next) => {
+    res.cookie('jwt', 'loggedout', {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true,
+    });
+    console.log('smh');
+    res.status(200).json({ status: 'success' });
+};
 
 exports.adminOnly = () => {
     return (req, res, next) => {

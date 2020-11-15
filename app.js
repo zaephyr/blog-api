@@ -1,10 +1,15 @@
-var express = require('express');
+const express = require('express');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const helmet = require('helmet');
+const cors = require('cors');
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcryptjs');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -12,9 +17,11 @@ const globalErrorHandler = require('./controllers/errorController');
 const blogRouter = require('./routes/blogRoutes');
 const userRouter = require('./routes/userRoutes');
 const messageRouter = require('./routes/messageRoutes');
+const authRouter = require('./routes/authRoutes');
 
 const app = express();
 
+app.use(cors());
 // Set security HTTP headers
 app.use(helmet());
 
@@ -42,6 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/blogs', blogRouter);
 app.use('/api/v1/blogs/:id/messages', messageRouter);
+app.use('/api/v1/auth', authRouter);
 
 app.all('*', (req, res, next) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server!!`, 404));

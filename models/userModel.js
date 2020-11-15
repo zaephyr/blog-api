@@ -17,7 +17,7 @@ const UserSchema = new Schema({
     name_last: { type: String, trim: true, minlength: [2, 'A last name must have more or equal then 2 characters'] },
     email: {
         type: String,
-        unique: true,
+        sparse: true,
         lowercase: true,
         trim: true,
         validate: [validator.isEmail, 'Please provide a valid email'],
@@ -43,6 +43,12 @@ const UserSchema = new Schema({
             message: 'Passwords do not match',
         },
     },
+});
+
+UserSchema.virtual('messages', {
+    ref: 'Message',
+    foreignField: 'user',
+    localField: '_id',
 });
 
 UserSchema.methods.correctPassword = async function (candidatePassword, userPassword) {

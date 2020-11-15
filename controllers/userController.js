@@ -21,7 +21,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
         return next(new AppError('This route is not for password updates. Please use /updatePassword', 400));
     }
 
-    const filteredBody = filterObj(req.body, 'username', 'name_first', 'name_last', 'email');
+    const filteredBody = filterObj(req.body, 'username', 'name_first', 'name_last', 'email', 'profile_img');
     const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, { new: true, runValidators: true });
 
     res.status(200).json({
@@ -42,6 +42,17 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 
 // exports.getAllUsers = factory.getAll(User);
 exports.getUser = factory.getOne(User);
+
+exports.userExists = catchAsync(async (req, res, next) => {
+    const doc = User.findOne({ username: req.params.username });
+    const user = await doc;
+
+    if (!user) {
+        return next(new AppError('No user found with that username', 404));
+    }
+
+    res.status(200).json(user);
+});
 
 //Do NOT update passwords with THIS!!!
 exports.updateUser = factory.updateOne(User);
