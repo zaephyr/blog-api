@@ -23,7 +23,7 @@ const UserSchema = new Schema({
         validate: [validator.isEmail, 'Please provide a valid email'],
     },
     profile_img: { type: String },
-    isAdmin: { type: Boolean, default: false },
+    isAdmin: { type: Boolean, default: true },
     password: {
         type: String,
         required: [true, 'Please provide a password'],
