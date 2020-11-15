@@ -1,6 +1,9 @@
 {
   "name": "blog-api",
   "version": "0.0.0",
+  "engines": {
+    "node": "12.19.00"
+  },
   "private": true,
   "scripts": {
     "start": "nodemon server.js",
