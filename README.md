@@ -1,16 +1,9 @@
 <br />
 <p align="center">
-  <a href="https://github.com/zaephyr/blog-api">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
   <h3 align="center">Blog-api</h3>
 
   <p align="center">
     Simple REST api
-    <br />
-    <a href="https://github.com/zaephyr/blog-api"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://pacific-fjord-55363.herokuapp.com/api/v1/">Link to a blog api</a>
     ·
@@ -37,7 +30,7 @@
 
 Works as Backend for:
 
--   Blog-nuxt: [Under construction - Live Page](url.to.page) **||** [Repository](https://github.com/zaephyr/blog-nuxt)
+-   Blog-nuxt: [Live Page](http://wooden-self.surge.sh/) **||** [Repository](https://github.com/zaephyr/blog-nuxt)
 
 You can call the API `https://pacific-fjord-55363.herokuapp.com/api/v1/ROUTE/ENDPOINT`, this way
 
@@ -69,6 +62,7 @@ Logging in before calling other endpoints is **necessary**. Calling `/auth/login
 
 ### Built With
 
+-   [Node.js](https://nodejs.org/)
 -   [Express.js](https://expressjs.com/)
 -   [MongoDB](https://www.mongodb.com/)
 
