@@ -67,8 +67,10 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
     // Getting token and check if its there
     let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('bearer')) {
+    if (req.headers.authorization.startsWith('bearer')) {
         token = req.headers.authorization.split(' ')[1];
+    } else if (req.headers.authorization) {
+        token = req.headers.authorization;
     } else if (req.cookies.jwt) {
         token = req.cookies.jwt;
     }
@@ -85,7 +87,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     if (!currentUser) {
         return next(new AppError('The user belonging to this token does no longer exists'));
     }
-
     req.user = currentUser;
     res.locals.user = currentUser;
 
